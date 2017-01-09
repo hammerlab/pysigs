@@ -2,7 +2,7 @@
 
 import unittest
 
-from pandas import DataFrame
+from pandas import DataFrame, read_csv
 
 import pandas as pd
 import tempfile
@@ -14,15 +14,11 @@ class test_deconstruct_sigs(unittest.TestCase):
   
   def test_whichSignatures_on_ovarian_cancer_data(self):
     input_data_frame \
-      = pd.read_csv("../data/aocs-chemo-neoantigens/mutation_contexts_counts.csv")
+      = read_csv("../data/aocs-chemo-neoantigens/mutation_contexts_counts.csv")
     output_data_frame = which_signatures(input_data_frame)
-    output_file, output_filename = tempfile.mkstemp(suffix="csv")
-    output_data_frame.to_csv(output_filename)
-
-    result = subprocess.call(["diff", 
-                  "../data/aocs-chemo-neoantigens/deconstructSigs_output.csv",
-                  output_filename])
-    self.assertTrue(result == 0)
+    golden_output \
+      = read_csv("../data/aocs-chemo-neoantigens/deconstructSigs_output.csv")
+    self.assertTrue(golden_output.equals(output_data_frame))
     
 
 if __name__ == '__main__':
