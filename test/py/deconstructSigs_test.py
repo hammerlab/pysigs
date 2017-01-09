@@ -17,8 +17,8 @@ class test_deconstruct_sigs(unittest.TestCase):
       = read_csv("../data/aocs-chemo-neoantigens/all_signatures.csv", 
                   index_col = 0)
     siglen = len("Signature")
-    cosmic_signatures = [column for column in signatures_cosmic.columns if
-    column[:siglen] == "Signature"]
+    cosmic_signatures = [column for column in signatures_cosmic.columns 
+                          if column[:siglen] == "Signature"]
     my_signatures = raw_my_signatures.loc[cosmic_signatures, :]
     input_data_frame \
       = read_csv("../data/aocs-chemo-neoantigens/mutation_contexts_counts.csv")
@@ -30,12 +30,12 @@ class test_deconstruct_sigs(unittest.TestCase):
     
     first = True
     for sample in input_data_frame.index:
-      output_row = which_signatures(tumor_ref = input_data_frame,
+      output_row = which_signatures(tumor = input_data_frame,
                                     sample_id = sample,
                                     contexts_needed = True,
                                     signature_cutoff = 0.0,
                                     tri_counts_method = "default",
-                                    signatures_ref = my_signatures)
+                                    signatures = my_signatures)
       if first:
         output_data_frame = output_row
         first = False
