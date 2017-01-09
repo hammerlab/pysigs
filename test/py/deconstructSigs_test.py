@@ -27,10 +27,23 @@ class test_deconstruct_sigs(unittest.TestCase):
     kind_name = input_data_frame.columns[-1]
     input_data_frame.drop(source_id_name, 1)
     input_data_frame.drop(kind_name, 1)
-    output_data_frame = which_signatures(input_data_frame)
+    
+    first = True
+    for sample in input_data_frame.index:
+      output_row = which_signatures(tumor_ref = input_data_frame,
+                                    sample_id = sample,
+                                    contexts_needed = True,
+                                    signature_cutoff = 0.0,
+                                    tri_counts_method = "default",
+                                    signatures_ref = my_signatures)
+      if first:
+        output_data_frame = output_row
+        first = False
+      else:
+        output_data_frame.append(output_row)
     golden_output \
       = read_csv("../data/aocs-chemo-neoantigens/deconstructSigs_output.csv")
-#    self.assertTrue(golden_output.equals(output_data_frame))
+    self.assertTrue(golden_output.equals(output_data_frame))
     
 
 if __name__ == '__main__':
