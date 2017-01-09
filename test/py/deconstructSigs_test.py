@@ -22,6 +22,11 @@ class test_deconstruct_sigs(unittest.TestCase):
     my_signatures = raw_my_signatures.loc[cosmic_signatures, :]
     input_data_frame \
       = read_csv("../data/aocs-chemo-neoantigens/mutation_contexts_counts.csv")
+    input_data_frame = input_data_frame.set_index(['source_id', 'kind'])
+    source_id_name = input_data_frame.columns[0]
+    kind_name = input_data_frame.columns[-1]
+    input_data_frame.drop(source_id_name, 1)
+    input_data_frame.drop(kind_name, 1)
     output_data_frame = which_signatures(input_data_frame)
     golden_output \
       = read_csv("../data/aocs-chemo-neoantigens/deconstructSigs_output.csv")
